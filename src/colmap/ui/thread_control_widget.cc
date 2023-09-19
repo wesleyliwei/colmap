@@ -54,7 +54,7 @@ void ThreadControlWidget::StartThread(const QString& progress_text,
                                       const bool stoppable,
                                       std::unique_ptr<Thread> thread) {
   CHECK(!thread_);
-  CHECK_NOTNULL(thread);
+  CHECK_NOTNULL(thread.get());
 
   thread_ = std::move(thread);
 

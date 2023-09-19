@@ -97,7 +97,7 @@ void BundleAdjustmentWidget::Show(
 }
 
 void BundleAdjustmentWidget::Run() {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
 
   WriteOptions();
 

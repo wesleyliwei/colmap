@@ -100,7 +100,8 @@ void Reconstruction::Load(const DatabaseCache& database_cache) {
 
 void Reconstruction::SetUp(
     std::shared_ptr<const CorrespondenceGraph> correspondence_graph) {
-  correspondence_graph_ = std::move(CHECK_NOTNULL(correspondence_graph));
+  CHECK_NOTNULL(correspondence_graph.get());
+  correspondence_graph_ = std::move(correspondence_graph);
 
   for (auto& image : images_) {
     image.second.SetUp(Camera(image.second.CameraId()));

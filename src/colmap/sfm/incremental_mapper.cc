@@ -134,7 +134,7 @@ void IncrementalMapper::BeginReconstruction(
 }
 
 void IncrementalMapper::EndReconstruction(const bool discard) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
 
   if (discard) {
     for (const image_t image_id : reconstruction_->RegImageIds()) {
@@ -204,7 +204,7 @@ bool IncrementalMapper::FindInitialImagePair(const Options& options,
 }
 
 std::vector<image_t> IncrementalMapper::FindNextImages(const Options& options) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   CHECK(options.Check());
 
   std::function<float(const Image&)> rank_image_func;
@@ -262,7 +262,7 @@ std::vector<image_t> IncrementalMapper::FindNextImages(const Options& options) {
 bool IncrementalMapper::RegisterInitialImagePair(const Options& options,
                                                  const image_t image_id1,
                                                  const image_t image_id2) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   CHECK_EQ(reconstruction_->NumRegImages(), 0);
 
   CHECK(options.Check());
@@ -343,7 +343,7 @@ bool IncrementalMapper::RegisterInitialImagePair(const Options& options,
 
 bool IncrementalMapper::RegisterNextImage(const Options& options,
                                           const image_t image_id) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   CHECK_GE(reconstruction_->NumRegImages(), 2);
 
   CHECK(options.Check());
@@ -539,25 +539,25 @@ bool IncrementalMapper::RegisterNextImage(const Options& options,
 size_t IncrementalMapper::TriangulateImage(
     const IncrementalTriangulator::Options& tri_options,
     const image_t image_id) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   return triangulator_->TriangulateImage(tri_options, image_id);
 }
 
 size_t IncrementalMapper::Retriangulate(
     const IncrementalTriangulator::Options& tri_options) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   return triangulator_->Retriangulate(tri_options);
 }
 
 size_t IncrementalMapper::CompleteTracks(
     const IncrementalTriangulator::Options& tri_options) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   return triangulator_->CompleteAllTracks(tri_options);
 }
 
 size_t IncrementalMapper::MergeTracks(
     const IncrementalTriangulator::Options& tri_options) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   return triangulator_->MergeAllTracks(tri_options);
 }
 
@@ -568,7 +568,7 @@ IncrementalMapper::AdjustLocalBundle(
     const IncrementalTriangulator::Options& tri_options,
     const image_t image_id,
     const std::unordered_set<point3D_t>& point3D_ids) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   CHECK(options.Check());
 
   LocalBundleAdjustmentReport report;
@@ -679,7 +679,7 @@ IncrementalMapper::AdjustLocalBundle(
 
 bool IncrementalMapper::AdjustGlobalBundle(
     const Options& options, const BundleAdjustmentOptions& ba_options) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
 
   const std::vector<image_t>& reg_image_ids = reconstruction_->RegImageIds();
 
@@ -726,7 +726,7 @@ bool IncrementalMapper::AdjustGlobalBundle(
 }
 
 size_t IncrementalMapper::FilterImages(const Options& options) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   CHECK(options.Check());
 
   // Do not filter images in the early stage of the reconstruction, since the
@@ -751,14 +751,14 @@ size_t IncrementalMapper::FilterImages(const Options& options) {
 }
 
 size_t IncrementalMapper::FilterPoints(const Options& options) {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   CHECK(options.Check());
   return reconstruction_->FilterAllPoints3D(options.filter_max_reproj_error,
                                             options.filter_min_tri_angle);
 }
 
 const Reconstruction& IncrementalMapper::GetReconstruction() const {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
   return *reconstruction_;
 }
 

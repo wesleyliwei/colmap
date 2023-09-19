@@ -68,7 +68,7 @@ BundleAdjustmentController::BundleAdjustmentController(
     : options_(options), reconstruction_(std::move(reconstruction)) {}
 
 void BundleAdjustmentController::Run() {
-  CHECK_NOTNULL(reconstruction_);
+  CHECK_NOTNULL(reconstruction_.get());
 
   PrintHeading1("Global bundle adjustment");
 
