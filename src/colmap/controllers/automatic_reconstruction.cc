@@ -51,7 +51,7 @@ AutomaticReconstructionController::AutomaticReconstructionController(
       active_thread_(nullptr) {
   CHECK(ExistsDir(options_.workspace_path));
   CHECK(ExistsDir(options_.image_path));
-  CHECK_NOTNULL(reconstruction_manager_);
+  CHECK_NOTNULL(reconstruction_manager_.get());
 
   option_manager_.AddAllOptions();
 

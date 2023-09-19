@@ -1031,8 +1031,8 @@ class SiftCPUFeatureMatcher : public FeatureMatcher {
       flann_index2_ = BuildFlannIndex(*descriptors2_);
     }
 
-    CHECK_NOTNULL(descriptors1_);
-    CHECK_NOTNULL(descriptors2_);
+    CHECK_NOTNULL(descriptors1_.get());
+    CHECK_NOTNULL(descriptors2_.get());
 
     if (descriptors1_->rows() == 0 || descriptors2_->rows() == 0) {
       return;
@@ -1092,7 +1092,7 @@ class SiftCPUFeatureMatcher : public FeatureMatcher {
     two_view_geometry->inlier_matches.clear();
 
     if (descriptors1 != nullptr) {
-      CHECK_NOTNULL(keypoints1);
+      CHECK_NOTNULL(keypoints1.get());
       CHECK_EQ(descriptors1->rows(), keypoints1->size());
       CHECK_EQ(descriptors1->cols(), 128);
       keypoints1_ = keypoints1;
@@ -1101,7 +1101,7 @@ class SiftCPUFeatureMatcher : public FeatureMatcher {
     }
 
     if (descriptors2 != nullptr) {
-      CHECK_NOTNULL(keypoints2);
+      CHECK_NOTNULL(keypoints2.get());
       CHECK_EQ(descriptors2->rows(), keypoints2->size());
       CHECK_EQ(descriptors2->cols(), 128);
       keypoints2_ = keypoints2;
@@ -1354,7 +1354,7 @@ class SiftGPUFeatureMatcher : public FeatureMatcher {
     constexpr size_t kFeatureShapeNumElems = 4;
 
     if (descriptors1 != nullptr) {
-      CHECK_NOTNULL(keypoints1);
+      CHECK_NOTNULL(keypoints1.get());
       CHECK_EQ(descriptors1->rows(), keypoints1->size());
       CHECK_EQ(descriptors1->cols(), 128);
       WarnIfMaxNumMatchesReachedGPU(*descriptors1);
@@ -1368,7 +1368,7 @@ class SiftGPUFeatureMatcher : public FeatureMatcher {
     }
 
     if (descriptors2 != nullptr) {
-      CHECK_NOTNULL(keypoints2);
+      CHECK_NOTNULL(keypoints2.get());
       CHECK_EQ(descriptors2->rows(), keypoints2->size());
       CHECK_EQ(descriptors2->cols(), 128);
       WarnIfMaxNumMatchesReachedGPU(*descriptors2);
